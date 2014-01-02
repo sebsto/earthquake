@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0019D570187621AA00F8228C /* NSData+CryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 0019D56F187621AA00F8228C /* NSData+CryptoHash.m */; };
 		00D9D6BE1875F8F300A9EE0D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D9D6BD1875F8F300A9EE0D /* Cocoa.framework */; };
 		00D9D6C81875F8F300A9EE0D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 00D9D6C61875F8F300A9EE0D /* InfoPlist.strings */; };
 		00D9D6CA1875F8F300A9EE0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D9D6C91875F8F300A9EE0D /* main.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0019D56E187621AA00F8228C /* NSData+CryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CryptoHash.h"; sourceTree = "<group>"; };
+		0019D56F187621AA00F8228C /* NSData+CryptoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+CryptoHash.m"; sourceTree = "<group>"; };
 		00D9D6BA1875F8F300A9EE0D /* earthquake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = earthquake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D9D6BD1875F8F300A9EE0D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		00D9D6C01875F8F300A9EE0D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -125,6 +128,8 @@
 				00D9D6D21875F8F300A9EE0D /* MainMenu.xib */,
 				00D9D6D51875F8F300A9EE0D /* Images.xcassets */,
 				00D9D6C41875F8F300A9EE0D /* Supporting Files */,
+				0019D56E187621AA00F8228C /* NSData+CryptoHash.h */,
+				0019D56F187621AA00F8228C /* NSData+CryptoHash.m */,
 			);
 			path = earthquake;
 			sourceTree = "<group>";
@@ -258,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00D9D6D11875F8F300A9EE0D /* AppDelegate.m in Sources */,
+				0019D570187621AA00F8228C /* NSData+CryptoHash.m in Sources */,
 				00D9D6F31876001400A9EE0D /* Server.m in Sources */,
 				00D9D6CA1875F8F300A9EE0D /* main.m in Sources */,
 			);
