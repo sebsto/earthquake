@@ -8,11 +8,18 @@
 
 #import "AppDelegate.h"
 
+#define WINDOW_AUTOSAVE_NAME    @"MainWindow"
+
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Insert code here to initialize your application
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    
+    //enable auto save the window position
+    [self.window.windowController setShouldCascadeWindows:NO];
+    [self.window setFrameAutosaveName:WINDOW_AUTOSAVE_NAME];
+    
+    //restore last windo position
+    [self.window setFrameFromString:WINDOW_AUTOSAVE_NAME];
 }
 
 /*

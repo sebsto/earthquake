@@ -470,6 +470,7 @@
 				00D9D6ED1875F8F400A9EE0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		00D9D6EE1875F8F400A9EE0D /* Build configuration list for PBXNativeTarget "earthquakeTests" */ = {
 			isa = XCConfigurationList;
@@ -478,6 +479,7 @@
 				00D9D6F01875F8F400A9EE0D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
