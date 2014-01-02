@@ -20,8 +20,11 @@
 
 - (void) commandDidTerminate:(NSNotification *)notification {
     NSLog(@"daemon ended");
-    [self.task terminate];
     self.task = nil;
+    
+    [self addTextToOuput:@"+++ terminated +++"];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
 }
 
@@ -33,15 +36,7 @@
     
     while ((data = [file availableData]) && [data length]){
         
-        NSString *outStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        self.outputText.string = [self.outputText.string stringByAppendingString:
-                                                   [NSString stringWithFormat:@"%@", outStr]];
-        
-        // Scroll to end of outputText field
-        NSRange range;
-        range = NSMakeRange(self.outputText.string.length, 0);
-        [self.outputText scrollRangeToVisible:range];
+        [self addTextToOuput:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
         
         [file waitForDataInBackgroundAndNotify];
     }
@@ -50,11 +45,16 @@
 - (IBAction)controlTsunamiDaemon:(id)sender {
     
     if (self.task && self.task.isRunning) {
+        
         NSLog(@"Stop Task");
         [self.task terminate];
+        
     } else {
         NSLog(@"Start Task");
+        
         self.outputText.string = @"";
+        [self addTextToOuput:@"+++ started +++"];
+        
         [self performSelectorInBackground:@selector(startDaemon) withObject:self];
         [self.startStopButton setImage:[NSImage imageNamed:@"NSStopProgressTemplate"]];
     }
@@ -131,6 +131,16 @@
 
 - (void)controlTextDidChange:(NSNotification *)aNotification {
     [self.startStopButton setEnabled:(self.selectedDir.stringValue.length > 0)];
+}
+
+- (void) addTextToOuput:(NSString*)text {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", text]];
+        
+        [[self.outputText textStorage] appendAttributedString:attr];
+        [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
+    });
 }
 
 @end
