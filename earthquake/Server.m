@@ -10,6 +10,7 @@
 
 @implementation Server
 
+// setup default value after loading
 - (void)awakeFromNib {
     
     self.startStopButton.enabled = NO;
@@ -18,6 +19,7 @@
     
 }
 
+// notify the daemon terminated
 - (void) commandDidTerminate:(NSNotification *)notification {
     NSLog(@"daemon ended");
     self.task = nil;
@@ -28,6 +30,7 @@
     
 }
 
+// notify the daemon produced text output
 - (void)commandOutputNotification:(NSNotification *)notification
 {
     NSLog(@"commandOutputNotification");
@@ -42,6 +45,7 @@
     }
 }
 
+// handle click on start / stop button
 - (IBAction)controlTsunamiDaemon:(id)sender {
     
     if (self.task && self.task.isRunning) {
@@ -60,6 +64,7 @@
     }
 }
 
+// start daemon and register notifications
 - (void)startDaemon {
     
     @try {
@@ -68,7 +73,10 @@
         self.task = [[NSTask alloc] init];
         self.task.launchPath = @"/Users/stormacq/Downloads/tsunamid";
         self.task.currentDirectoryPath = self.selectedDir.stringValue;
-        //self.task.arguments = [NSArray arrayWithObjects:@"*", nil];
+        
+        self.task.arguments = [[NSFileManager defaultManager]
+                                    contentsOfDirectoryAtPath:self.selectedDir.stringValue
+                                    error:nil];
         
         // Set the pipe to the standard output and error to get the results of the command
         NSPipe *p = [[NSPipe alloc] init];
@@ -100,6 +108,7 @@
 
 }
 
+// handle "Select Folder" button
 - (IBAction)selectFolder:(id)sender {
 
     
@@ -129,10 +138,12 @@
 
 }
 
+// enable / disable the start/stop button depending on content of "Selected Folder" text field
 - (void)controlTextDidChange:(NSNotification *)aNotification {
     [self.startStopButton setEnabled:(self.selectedDir.stringValue.length > 0)];
 }
 
+// add output to TextOutput & scroll to the last line
 - (void) addTextToOuput:(NSString*)text {
     
     dispatch_async(dispatch_get_main_queue(), ^{
