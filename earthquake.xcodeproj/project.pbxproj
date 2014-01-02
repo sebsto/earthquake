@@ -18,6 +18,7 @@
 		00D9D6DE1875F8F300A9EE0D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D9D6BD1875F8F300A9EE0D /* Cocoa.framework */; };
 		00D9D6E61875F8F400A9EE0D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 00D9D6E41875F8F400A9EE0D /* InfoPlist.strings */; };
 		00D9D6E81875F8F400A9EE0D /* earthquakeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D9D6E71875F8F400A9EE0D /* earthquakeTests.m */; };
+		00D9D6F31876001400A9EE0D /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D9D6F21876001400A9EE0D /* Server.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,8 @@
 		00D9D6E31875F8F400A9EE0D /* earthquakeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "earthquakeTests-Info.plist"; sourceTree = "<group>"; };
 		00D9D6E51875F8F400A9EE0D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		00D9D6E71875F8F400A9EE0D /* earthquakeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = earthquakeTests.m; sourceTree = "<group>"; };
+		00D9D6F11876001400A9EE0D /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		00D9D6F21876001400A9EE0D /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 			children = (
 				00D9D6CF1875F8F300A9EE0D /* AppDelegate.h */,
 				00D9D6D01875F8F300A9EE0D /* AppDelegate.m */,
+				00D9D6F11876001400A9EE0D /* Server.h */,
+				00D9D6F21876001400A9EE0D /* Server.m */,
 				00D9D6D21875F8F300A9EE0D /* MainMenu.xib */,
 				00D9D6D51875F8F300A9EE0D /* Images.xcassets */,
 				00D9D6C41875F8F300A9EE0D /* Supporting Files */,
@@ -253,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00D9D6D11875F8F300A9EE0D /* AppDelegate.m in Sources */,
+				00D9D6F31876001400A9EE0D /* Server.m in Sources */,
 				00D9D6CA1875F8F300A9EE0D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
