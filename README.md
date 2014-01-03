@@ -19,7 +19,8 @@ Cocoa front end for Tsunami UDP
 - Open the project in XCode
 - Build & Run
 
-Tsunami Binaries are downloaded automatically at first run.  They are installed in ```~/Library/Application Support/com.stormacq/earthquake```
+Tsunami Binaries are downloaded automatically at first run.  They are installed in ```~/Library/Application Support/com.stormacq.earthquake/```   
+Binaries are downloaded and verified from https://github.com/sebsto/tsunami-udp/wiki/Binaries 
 
 
 
