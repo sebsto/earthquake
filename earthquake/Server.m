@@ -8,6 +8,8 @@
 
 #import "Server.h"
 
+#import "AppDelegate.h"
+
 @implementation Server
 
 // setup default value after loading
@@ -68,10 +70,17 @@
 - (void)startDaemon {
     
     @try {
+        
+        //get application binary's path
+        AppDelegate* delegate = (AppDelegate*)[NSApp delegate];
+        NSString* binaryDirectory = [delegate applicationBinaryDirectory];
+        NSString* binaryPath = [NSString stringWithFormat:@"%@/tsunamid", binaryDirectory];
+        
+        //App Delegate ensures this binary is valid (exist and correct checksum) at application startup time
 
         // Set up the process
         self.task = [[NSTask alloc] init];
-        self.task.launchPath = @"/Users/stormacq/Downloads/tsunamid";
+        self.task.launchPath = binaryPath;
         self.task.currentDirectoryPath = self.selectedDir.stringValue;
         
         self.task.arguments = [[NSFileManager defaultManager]

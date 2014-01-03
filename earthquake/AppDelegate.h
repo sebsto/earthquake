@@ -12,4 +12,7 @@
 
 @property (assign) IBOutlet NSWindow *window;
 
+//return the directory where TSunami binaries will be installed
+-(NSString*) applicationBinaryDirectory;
+
 @end
