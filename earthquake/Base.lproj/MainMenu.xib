@@ -341,7 +341,6 @@
         </menu>
         <customObject id="494" customClass="AppDelegate">
             <connections>
-                <outlet property="tabView" destination="EER-0M-8SF" id="hCk-og-APD"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
