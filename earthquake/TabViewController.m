@@ -2,6 +2,8 @@
 //  TabViewController.m
 //  earthquake
 //
+//  Only required to keep track / restore last used tab
+//
 //  Created by Sébastien Stormacq on 03/01/14.
 //  Copyright (c) 2014 Sebastien Stormacq. All rights reserved.
 //
