@@ -345,7 +345,7 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <viewController nibName="MainMenu" id="TKh-ho-8zB" userLabel="Server View Controller - MainMenu" customClass="Server">
+        <viewController nibName="MainMenu" id="TKh-ho-8zB" userLabel="Server View Controller - MainMenu" customClass="ServerViewController">
             <connections>
                 <outlet property="outputText" destination="HuL-Gf-WAk" id="Sxz-LT-qCn"/>
                 <outlet property="selectedDir" destination="66c-jN-3pm" id="E4A-BB-xBk"/>
