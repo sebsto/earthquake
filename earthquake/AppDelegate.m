@@ -159,8 +159,8 @@
     [self.window.windowController setShouldCascadeWindows:NO];
     [self.window setFrameAutosaveName:WINDOW_AUTOSAVE_NAME];
     
-    //restore last windo position
-    [self.window setFrameFromString:WINDOW_AUTOSAVE_NAME];
+    //restore last window position
+    [self.window setFrameFromString:WINDOW_AUTOSAVE_NAME];    
 }
 
 /*
