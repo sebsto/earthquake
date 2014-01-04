@@ -19,5 +19,20 @@
 @property (unsafe_unretained) IBOutlet NSTextView *outputText;
 
 @property NSTask *task;
+@property NSFileHandle* input;
+
+//this class must implement kind of State Machine to keep track of outputs
+#define NEXT_STEP_NONE              0x00
+#define NEXT_STEP_DIR               0x02
+#define NEXT_STEP_REMOTE_FILE_LIST  0x04
+
+@property NSUInteger        state;
+@property NSMutableArray*   buffer;
 
 @end
+
+typedef struct file_item {
+    __unsafe_unretained NSString   *name;
+                        NSUInteger size;
+} file_item;
+
