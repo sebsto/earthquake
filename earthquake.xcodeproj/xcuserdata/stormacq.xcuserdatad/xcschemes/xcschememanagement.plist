@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>RegExpTest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>earthquake.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0096DB581878C66F002D3C13</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>00D9D6B91875F8F300A9EE0D</key>
 		<dict>
 			<key>primary</key>
