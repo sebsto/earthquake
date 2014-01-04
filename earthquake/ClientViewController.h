@@ -8,6 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ClientViewController : NSViewController
+@interface ClientViewController : NSViewController <NSTextFieldDelegate>
+
+@property (weak) IBOutlet NSTextField *serverAddress;
+@property (weak) IBOutlet NSButton    *startStopButton;
+@property (weak) IBOutlet NSButton    *statusButton;
+@property (weak) IBOutlet NSButton    *settingsButton;
+@property (weak) IBOutlet NSTableView *fileTable;
+
+@property (unsafe_unretained) IBOutlet NSTextView *outputText;
+
+@property NSTask *task;
 
 @end

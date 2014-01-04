@@ -16,16 +16,22 @@
 - (void)awakeFromNib {
     
     self.startStopButton.enabled = NO;
-    [self.outputText setEditable:NO];
-    self.selectedDir.delegate = self;
+    self.outputText.editable     = NO;
+    self.selectedDir.delegate    = self;
     
 }
 
 // notify the daemon terminated
-- (void) commandDidTerminate:(NSNotification *)notification {
-    NSLog(@"daemon ended");
-    self.task = nil;
+- (void) serverDidTerminate:(NSNotification *)notification {
     
+    //this notification is also called when subprocessed are terminated
+    //first, check that we are notified abou the main server process
+    int pid = ((NSTask*)notification.object).processIdentifier;
+    if (self.task.processIdentifier != pid) return;
+    
+    NSLog(@"Server ended pid = %d", pid);
+    self.task = nil;
+    [self.startStopButton setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
     [self addTextToOuput:@"+++ terminated +++"];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -33,9 +39,9 @@
 }
 
 // notify the daemon produced text output
-- (void)commandOutputNotification:(NSNotification *)notification
+- (void)serverOutputNotification:(NSNotification *)notification
 {
-    NSLog(@"commandOutputNotification");
+    NSLog(@"Server OutputNotification");
     NSData *data = nil;
     NSFileHandle* file = (NSFileHandle*)notification.object;
     
@@ -52,11 +58,11 @@
     
     if (self.task && self.task.isRunning) {
         
-        NSLog(@"Stop Task");
+        NSLog(@"Stop Server");
         [self.task terminate];
         
     } else {
-        NSLog(@"Start Task");
+        NSLog(@"Start Server");
         
         self.outputText.string = @"";
         [self addTextToOuput:@"+++ started +++"];
@@ -93,7 +99,7 @@
         self.task.standardError  = p;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(commandOutputNotification:)
+                                                 selector:@selector(serverOutputNotification:)
                                                      name:NSFileHandleDataAvailableNotification
                                                    object:p.fileHandleForReading];
         
@@ -101,10 +107,12 @@
         [p.fileHandleForReading waitForDataInBackgroundAndNotify];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(commandDidTerminate:)
+                                                 selector:@selector(serverDidTerminate:)
                                                      name:NSTaskDidTerminateNotification
                                                    object:nil];
         [self.task launch];
+        NSLog(@"Server launched, pid = %d", self.task.processIdentifier);
+        
         [self.task waitUntilExit];
     }
     @catch (NSException *exception) {

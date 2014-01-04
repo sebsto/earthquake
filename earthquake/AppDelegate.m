@@ -105,7 +105,6 @@
     NSFileManager* fm = [NSFileManager defaultManager];
     
     // create binary directory if it does not exist
-    NSLog(@"Checking existence of %@", binaryDirectory);
     if ( ! [fm fileExistsAtPath:binaryDirectory]) {
         
         NSLog(@"Creating directory for binaries");
