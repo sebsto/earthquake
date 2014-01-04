@@ -23,6 +23,8 @@
     self.startStopButton.enabled = NO;
     self.outputText.editable     = NO;
     self.serverAddress.delegate  = self;
+    self.serverAddress.target    = self;
+    self.serverAddress.action    = @selector(handleConnectButton:);
     
     self.state  = NEXT_STEP_NONE;
     self.buffer = nil;
@@ -259,15 +261,6 @@
 // enable / disable the start/stop button depending on content of "Server Address" text field
 - (void)controlTextDidChange:(NSNotification *)aNotification {
     [self.startStopButton setEnabled:(self.serverAddress.stringValue.length > 0)];
-}
-
-// handle ENTER key on server address text field
--(void)controlTextDidEndEditing:(NSNotification *)notification
-{
-    // check if it was due to a return
-    if ( [[[notification userInfo] objectForKey:@"NSTextMovement"] intValue] == NSReturnTextMovement ) {
-        [self handleConnectButton:self];
-    }
 }
 
 // add output to TextOutput & scroll to the last line
