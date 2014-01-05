@@ -419,12 +419,13 @@
                                             </textFieldCell>
                                         </textField>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xj8-b0-Lye">
-                                            <rect key="frame" x="587" y="364" width="52" height="32"/>
+                                            <rect key="frame" x="612" y="371" width="21" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="9gM-L7-PRk"/>
+                                                <constraint firstAttribute="width" constant="21" id="2ry-fE-eJu"/>
+                                                <constraint firstAttribute="height" constant="21" id="hh8-sa-Btp"/>
                                             </constraints>
-                                            <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSFolder" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="apx-EW-wl4">
+                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSFolder" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="apx-EW-wl4">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -440,7 +441,7 @@
                                             <font key="titleFont" metaFont="system"/>
                                         </box>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="66c-jN-3pm">
-                                            <rect key="frame" x="171" y="371" width="414" height="22"/>
+                                            <rect key="frame" x="171" y="371" width="433" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter the path of the folder to server content from (or click the folder icon)" drawsBackground="YES" id="ih7-dh-E6V">
                                                 <font key="font" metaFont="system"/>
@@ -463,23 +464,22 @@
                                     <constraints>
                                         <constraint firstItem="uBl-mP-EPP" firstAttribute="leading" secondItem="yqE-Ge-On9" secondAttribute="leading" constant="65" id="019-bo-5SU"/>
                                         <constraint firstItem="bff-Q9-45y" firstAttribute="top" secondItem="yqE-Ge-On9" secondAttribute="top" constant="36" id="26c-yF-cXK"/>
-                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="trailing" secondItem="U0Z-2h-K3M" secondAttribute="trailing" id="2Gq-33-csR"/>
-                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="trailing" secondItem="nkV-uN-VBZ" secondAttribute="trailing" id="3U2-Cw-53g"/>
-                                        <constraint firstItem="bff-Q9-45y" firstAttribute="baseline" secondItem="Xj8-b0-Lye" secondAttribute="baseline" id="8aY-Yg-Fft"/>
-                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="trailing" secondItem="0bQ-29-iHp" secondAttribute="trailing" id="Dad-hj-Zh3"/>
+                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="leading" secondItem="66c-jN-3pm" secondAttribute="trailing" constant="8" symbolic="YES" id="CR3-Mo-sP5"/>
+                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="top" secondItem="bff-Q9-45y" secondAttribute="top" id="FlB-Lg-8Ee"/>
                                         <constraint firstItem="bff-Q9-45y" firstAttribute="leading" secondItem="U0Z-2h-K3M" secondAttribute="leading" id="GHc-vW-cxH"/>
                                         <constraint firstItem="bff-Q9-45y" firstAttribute="bottom" secondItem="66c-jN-3pm" secondAttribute="bottom" id="Gdm-5u-J7v"/>
-                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="leading" secondItem="66c-jN-3pm" secondAttribute="trailing" constant="8" id="MF4-jE-QbP"/>
+                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="trailing" secondItem="0bQ-29-iHp" secondAttribute="trailing" id="LdK-rA-x2O"/>
                                         <constraint firstItem="uBl-mP-EPP" firstAttribute="leading" secondItem="bff-Q9-45y" secondAttribute="trailing" constant="7" id="MvU-xU-exJ"/>
+                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="trailing" secondItem="nkV-uN-VBZ" secondAttribute="trailing" id="Oso-Ec-Gfr"/>
                                         <constraint firstItem="nkV-uN-VBZ" firstAttribute="top" secondItem="bff-Q9-45y" secondAttribute="bottom" constant="23" id="RzF-cs-4xb"/>
                                         <constraint firstItem="uBl-mP-EPP" firstAttribute="baseline" secondItem="bff-Q9-45y" secondAttribute="baseline" id="SQp-bq-VX3"/>
                                         <constraint firstAttribute="bottom" secondItem="0bQ-29-iHp" secondAttribute="bottom" constant="17" id="WQd-XZ-ZkN"/>
-                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="leading" secondItem="66c-jN-3pm" secondAttribute="trailing" constant="8" symbolic="YES" id="Xhl-cQ-vRY"/>
+                                        <constraint firstItem="Xj8-b0-Lye" firstAttribute="trailing" secondItem="U0Z-2h-K3M" secondAttribute="trailing" id="fCf-zU-rYD"/>
                                         <constraint firstItem="66c-jN-3pm" firstAttribute="leading" secondItem="uBl-mP-EPP" secondAttribute="trailing" constant="8" symbolic="YES" id="frN-8s-NWZ"/>
                                         <constraint firstItem="0bQ-29-iHp" firstAttribute="top" secondItem="yqE-Ge-On9" secondAttribute="top" constant="114" id="hmw-am-FEq"/>
                                         <constraint firstItem="bff-Q9-45y" firstAttribute="leading" secondItem="yqE-Ge-On9" secondAttribute="leading" constant="17" id="kwg-c1-qHu"/>
+                                        <constraint firstAttribute="trailing" secondItem="Xj8-b0-Lye" secondAttribute="trailing" constant="17" id="o0x-ZY-CxR"/>
                                         <constraint firstItem="0bQ-29-iHp" firstAttribute="top" secondItem="U0Z-2h-K3M" secondAttribute="bottom" constant="8" symbolic="YES" id="r71-OB-j36"/>
-                                        <constraint firstAttribute="trailing" secondItem="Xj8-b0-Lye" secondAttribute="trailing" constant="17" id="rFl-ZF-GkR"/>
                                         <constraint firstItem="bff-Q9-45y" firstAttribute="leading" secondItem="nkV-uN-VBZ" secondAttribute="leading" id="ygV-Se-Qb5"/>
                                         <constraint firstItem="bff-Q9-45y" firstAttribute="leading" secondItem="0bQ-29-iHp" secondAttribute="leading" id="ym4-A7-SZL"/>
                                     </constraints>
@@ -586,7 +586,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="handleSettingsButton:" target="5eR-mR-Tex" id="gbv-NQ-XBh"/>
+                                                <action selector="handleSettingsButton:" target="5eR-mR-Tex" id="pOQ-32-3W4"/>
                                             </connections>
                                         </button>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O4E-rc-n4B">

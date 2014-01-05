@@ -37,7 +37,11 @@
 @property NSMutableArray*   commandQueue;
 @property NSArray*          fileList;
 
+@property (strong) NSWindowController* settingsWindow;
+
 @end
+
+
 
 typedef struct file_item {
     __unsafe_unretained NSString   *name;

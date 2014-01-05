@@ -7,6 +7,7 @@
 //
 
 #import "ClientViewController.h"
+#import "SettingsPanelViewController.h"
 #import "AppDelegate.h"
 
 @implementation ClientViewController
@@ -18,7 +19,7 @@
 // free text for any command
 
 
-// TODO : crash when server is not available
+// TODO : double click to download file
 
 #pragma mark Initialization
 
@@ -38,6 +39,8 @@
     self.state              = NEXT_STEP_UNKNOWN;
     self.outputLinesBuffer  = nil;
     self.task               = nil;
+    
+    self.settingsWindow     = nil;
     
     self.commandQueue = [[NSMutableArray alloc] init];
 }
@@ -131,7 +134,7 @@
         self.task.launchPath = binaryPath;
         
         // TODO pick up value from settings
-        self.task.currentDirectoryPath = @"/Users/stormacq/Downloads";
+        self.task.currentDirectoryPath = [NSString stringWithFormat:@"%@/Downloads", NSHomeDirectory()];
         
         self.task.arguments = [NSArray arrayWithObjects:@"connect", self.serverAddress.stringValue, nil];
         
@@ -363,9 +366,34 @@
     
 }
 
-#pragma mark Misc
+#pragma mark Settings Window
+
+// catch programmatic close or user clicking on close button
+-(void)settingsWindowWillClose:(NSNotification *)notification {
+
+    if (self.settingsWindow) {
+        self.settingsWindow = nil;
+    }
+}
+
 
 - (IBAction)handleSettingsButton:(id)sender {
+    
+    //one time object creation
+    if (!self.settingsWindow) {
+        self.settingsWindow = [[NSWindowController alloc] initWithWindowNibName:@"SettingsPanel"];
+        [self.settingsWindow showWindow:self];
+        
+        //register for "Window Will Close" notification
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(settingsWindowWillClose:)
+                                                     name:NSWindowWillCloseNotification
+                                                   object:nil];
+
+    } else {
+        [self.settingsWindow.window performClose:self];
+    }
+    
 }
 
 // enable / disable the start/stop button depending on content of "Server Address" text field
@@ -406,6 +434,5 @@
     else
         return [NSString stringWithFormat:@"%ld", (unsigned long)item.size];
 }
-
 
 @end

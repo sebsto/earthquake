@@ -10,6 +10,8 @@
 		0019D570187621AA00F8228C /* NSData+CryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 0019D56F187621AA00F8228C /* NSData+CryptoHash.m */; };
 		0021C28D1876CE9500DECE29 /* ClientViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0021C28C1876CE9500DECE29 /* ClientViewController.m */; };
 		00603B7A1876ED8A00425380 /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00603B791876ED8A00425380 /* TabViewController.m */; };
+		008AC45B1879F773006970AE /* SettingsPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 008AC45A1879F773006970AE /* SettingsPanelViewController.m */; };
+		008AC45D1879FF2A006970AE /* SettingsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 008AC45C1879FF2A006970AE /* SettingsPanel.xib */; };
 		0096DB5B1878C66F002D3C13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0096DB5A1878C66F002D3C13 /* Foundation.framework */; };
 		0096DB5E1878C670002D3C13 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0096DB5D1878C670002D3C13 /* main.m */; };
 		0096DB621878C670002D3C13 /* RegExpTest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0096DB611878C670002D3C13 /* RegExpTest.1 */; };
@@ -57,6 +59,9 @@
 		0021C28C1876CE9500DECE29 /* ClientViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientViewController.m; sourceTree = "<group>"; };
 		00603B781876ED8A00425380 /* TabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
 		00603B791876ED8A00425380 /* TabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewController.m; sourceTree = "<group>"; };
+		008AC4591879F773006970AE /* SettingsPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPanelViewController.h; sourceTree = "<group>"; };
+		008AC45A1879F773006970AE /* SettingsPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPanelViewController.m; sourceTree = "<group>"; };
+		008AC45C1879FF2A006970AE /* SettingsPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsPanel.xib; sourceTree = "<group>"; };
 		0096DB591878C66F002D3C13 /* RegExpTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RegExpTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0096DB5A1878C66F002D3C13 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0096DB5D1878C670002D3C13 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -183,9 +188,12 @@
 				00D9D6F21876001400A9EE0D /* ServerViewController.m */,
 				0021C28B1876CE9500DECE29 /* ClientViewController.h */,
 				0021C28C1876CE9500DECE29 /* ClientViewController.m */,
+				008AC4591879F773006970AE /* SettingsPanelViewController.h */,
+				008AC45A1879F773006970AE /* SettingsPanelViewController.m */,
 				00603B781876ED8A00425380 /* TabViewController.h */,
 				00603B791876ED8A00425380 /* TabViewController.m */,
 				00D9D6D21875F8F300A9EE0D /* MainMenu.xib */,
+				008AC45C1879FF2A006970AE /* SettingsPanel.xib */,
 				00D9D6D51875F8F300A9EE0D /* Images.xcassets */,
 				00D9D6C41875F8F300A9EE0D /* Supporting Files */,
 				0019D56E187621AA00F8228C /* NSData+CryptoHash.h */,
@@ -321,6 +329,7 @@
 				00D9D6C81875F8F300A9EE0D /* InfoPlist.strings in Resources */,
 				00D9D6D61875F8F300A9EE0D /* Images.xcassets in Resources */,
 				00D9D6CE1875F8F300A9EE0D /* Credits.rtf in Resources */,
+				008AC45D1879FF2A006970AE /* SettingsPanel.xib in Resources */,
 				00D9D6D41875F8F300A9EE0D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				008AC45B1879F773006970AE /* SettingsPanelViewController.m in Sources */,
 				00603B7A1876ED8A00425380 /* TabViewController.m in Sources */,
 				00D9D6D11875F8F300A9EE0D /* AppDelegate.m in Sources */,
 				0019D570187621AA00F8228C /* NSData+CryptoHash.m in Sources */,
@@ -577,6 +587,7 @@
 				0096DB641878C670002D3C13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		00D9D6B51875F8F300A9EE0D /* Build configuration list for PBXProject "earthquake" */ = {
 			isa = XCConfigurationList;
