@@ -27,6 +27,8 @@
 #define NEXT_STEP_DIR               0x02
 #define NEXT_STEP_REMOTE_FILE_LIST  0x04
 
+@property BOOL connected;
+
 #define NOTIFICATION_CLIENT_READY   @"kNotificationTsunamiClientReady"
 
 @property NSInteger         state;

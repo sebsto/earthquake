@@ -31,8 +31,10 @@
     self.serverAddress.target    = self;
     self.serverAddress.action    = @selector(handleConnectButton:);
     
-    self.state  = NEXT_STEP_UNKNOWN;
-    self.buffer = nil;
+    self.connected = NO;
+    self.state     = NEXT_STEP_UNKNOWN;
+    self.buffer    = nil;
+    self.task      = nil;
     
     self.commandQueue = [[NSMutableArray alloc] init];
 }
@@ -61,6 +63,8 @@
 
     //warn other methods of this class that we are expecting a file list
     if ([cmd isEqualToString:@"dir"]) self.state = NEXT_STEP_DIR;
+    
+    
 }
 
 -(void)sendCommand:(NSString*)cmd {
@@ -75,26 +79,30 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
     }
     
-    
 }
 
 #pragma mark Start / Stop Client
 
 - (IBAction)handleConnectButton:(id)sender {
-    if (self.task && self.task.isRunning) {
+    
+    if (self.task && self.task.isRunning && self.connected) {
         
-        NSLog(@"Stop Client");
-        //[self.task terminate];
+        NSLog(@"Disconnect Client");
         [self sendCommand:@"close"];
         
     } else {
-        NSLog(@"Start Client");
         
-        self.outputText.string = @"";
-        [self addTextToOuput:@"+++ started +++\n"];
-        
-        [self performSelectorInBackground:@selector(startTsunamiClient) withObject:self];
-        self.startStopButton.title = @"Disconnect";
+        if (self.task && !self.connected) {
+            
+            NSLog(@"Reconnect client");
+            [self sendCommand:[NSString stringWithFormat:@"connect %@", self.serverAddress.stringValue]];
+            
+        } else {
+            
+            NSLog(@"Start Client");
+            [self performSelectorInBackground:@selector(startTsunamiClient) withObject:self];
+
+        }
     }
 }
 
@@ -151,6 +159,10 @@
 
         [self.task launch];
 
+        self.outputText.string = @"";
+        [self addTextToOuput:@"+++ started +++\n"];
+        self.statusButton.image = [NSImage imageNamed:@"NSStatusAvailable"];
+        
         //enqueue command
         [self sendCommand:@"dir"];
         
@@ -249,6 +261,16 @@
 -(void)handleOutputLine:(NSString*)line {
     
     // TODO must parse error message when the client can not connect
+
+    if ([line rangeOfString:@"Connection closed."].location != NSNotFound) {
+        self.startStopButton.title = @"Connect";
+        self.connected = NO;
+    }
+    
+    if ([line rangeOfString:@"Connected."].location != NSNotFound) {
+        self.startStopButton.title = @"Disconnect";
+        self.connected = YES;
+    }
     
     if ([line hasSuffix:@"tsunami> "]) {
         self.state = NEXT_STEP_READY;
@@ -277,7 +299,7 @@
         
     }
 
-    //NSLog(@"---%@---", line);
+    NSLog(@"---%@---", line);
 
 }
 
@@ -306,6 +328,12 @@
     NSLog(@"client ended");
     
     self.startStopButton.title = @"Connect";
+    self.statusButton.image    = [NSImage imageNamed:@"NSStatusNone"];
+    
+    self.connected = NO;
+    
+    if (self.task)
+        [self.task terminate];
     self.task   = nil;
     self.buffer = nil;
     [self addTextToOuput:@"\n+++ terminated +++\n"];
