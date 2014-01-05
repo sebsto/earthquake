@@ -80,6 +80,9 @@
     //when client is in READY state - go ahead and dequeue command immediatley
     if (self.state == NEXT_STEP_READY) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
+        
+        //do not accept other command while not back in READY state
+        self.state = NEXT_STEP_WAIT;
     }
     
 }
@@ -95,10 +98,12 @@
         
     } else {
         
-        if (self.task && !self.connected) {
+        if (self.task && self.task.isRunning && !self.connected) {
             
             NSLog(@"Reconnect client");
             [self sendCommand:[NSString stringWithFormat:@"connect %@", self.serverAddress.stringValue]];
+            
+            [self sendCommand:@"dir"];
             
         } else {
             
@@ -268,11 +273,14 @@
 -(void)handleOutputLine:(NSString*)line {
     
     // TODO must parse error message when the client can not connect
-    NSLog(@"---%@---", line);
+    //NSLog(@"---%@---", line);
 
     if ([line rangeOfString:@"Connection closed."].location != NSNotFound) {
         self.startStopButton.title = @"Connect";
         self.connected = NO;
+        self.fileList  = nil;
+        [self.fileTable reloadData];
+        self.outputLinesBuffer = nil;
     }
     
     if ([line rangeOfString:@"Connected."].location != NSNotFound) {
@@ -306,6 +314,7 @@
     }
     
     if ([line hasSuffix:@"tsunami> "]) {
+        NSLog(@"STATE is now ready to accept other commands");
         self.state = NEXT_STEP_READY;
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
     }
@@ -341,6 +350,9 @@
     self.statusButton.image    = [NSImage imageNamed:@"NSStatusNone"];
     
     self.connected = NO;
+    self.fileList = nil;
+    [self.fileTable reloadData];
+    
     
     if (self.task)
         [self.task terminate];
@@ -375,7 +387,7 @@
 #pragma mark Table Data Source
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-    NSLog(@"numberOfRowsInTableView");
+
     if (self.fileTable)
         return self.fileList.count;
     else
@@ -383,8 +395,6 @@
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)column row:(NSInteger)row {
-    
-    NSLog(@"objectValueForTableColumn : %@ - %ld", column, row);
     
     //retrive the value from the Array -> NSData -> Custom struct
     NSData* data = [self.fileList objectAtIndex:row];

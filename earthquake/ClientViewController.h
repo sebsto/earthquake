@@ -26,6 +26,7 @@
 #define NEXT_STEP_READY             0x00
 #define NEXT_STEP_DIR               0x02
 #define NEXT_STEP_REMOTE_FILE_LIST  0x04
+#define NEXT_STEP_WAIT              0xFF
 
 @property BOOL connected;
 
