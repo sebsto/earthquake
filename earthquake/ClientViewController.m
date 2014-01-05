@@ -31,10 +31,13 @@
     self.serverAddress.target    = self;
     self.serverAddress.action    = @selector(handleConnectButton:);
     
-    self.connected = NO;
-    self.state     = NEXT_STEP_UNKNOWN;
-    self.buffer    = nil;
-    self.task      = nil;
+    self.fileTable.dataSource    = self;
+    NSLog(@"file table : %@", self.fileTable);
+    
+    self.connected          = NO;
+    self.state              = NEXT_STEP_UNKNOWN;
+    self.outputLinesBuffer  = nil;
+    self.task               = nil;
     
     self.commandQueue = [[NSMutableArray alloc] init];
 }
@@ -188,8 +191,8 @@
     
     // re-assemble partial lines into one big string delimited by \n
     NSMutableString* temp = [[NSMutableString alloc] init];
-    for (int i = 0; i < self.buffer.count ; i++) {
-        [temp appendString:[self.buffer objectAtIndex:i]];
+    for (int i = 0; i < self.outputLinesBuffer.count ; i++) {
+        [temp appendString:[self.outputLinesBuffer objectAtIndex:i]];
     }
     
     // and split that string into lines
@@ -250,7 +253,11 @@
             //NSLog(@"File Size : %ld", item.size);
         }
         
-        [result insertObject:[NSValue valueWithPointer:&item] atIndex:i];
+        //wrap my struct to NSData to store it in an NSArray
+        //I am not using NSValue because it does not copy the bits, just wrap the pointer
+        //which is released at the end of this method
+        NSData *data = [NSData dataWithBytes:&item length:sizeof(item)];
+        [result insertObject:data atIndex:i];
 
     }
     
@@ -261,6 +268,7 @@
 -(void)handleOutputLine:(NSString*)line {
     
     // TODO must parse error message when the client can not connect
+    NSLog(@"---%@---", line);
 
     if ([line rangeOfString:@"Connection closed."].location != NSNotFound) {
         self.startStopButton.title = @"Connect";
@@ -272,35 +280,37 @@
         self.connected = YES;
     }
     
+    if (self.state == NEXT_STEP_DIR && [line hasPrefix:@"Remote file list:"]) {
+        
+        //we are going to receive the list of file at next call
+        self.state = NEXT_STEP_REMOTE_FILE_LIST;
+        NSLog(@"+++ Remote File List +++");
+        
+    } else if (self.state == NEXT_STEP_REMOTE_FILE_LIST) {
+        
+        //receiving list of available available files, store them as table data source
+        NSLog(@"+++ File List +++");
+        if (!self.outputLinesBuffer) self.outputLinesBuffer = [[NSMutableArray alloc] init];
+        [self.outputLinesBuffer addObject:line];
+        
+        if ([line hasSuffix:@"tsunami> "]) {
+            
+            //we have received the complete file list - no more next step
+            NSLog(@"+++ File list is complete");
+            //[self performSelectorInBackground:@selector(parseFileList) withObject:self];
+            self.fileList = [self parseFileList];
+            NSLog(@"fileTable : %@", self.fileTable);
+            [self.fileTable reloadData];
+        }
+        
+    }
+    
     if ([line hasSuffix:@"tsunami> "]) {
         self.state = NEXT_STEP_READY;
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
     }
     
-    if (self.state == NEXT_STEP_DIR && [line hasPrefix:@"Remote file list:"]) {
-        
-        //we are going to receive the list of file at next call
-        self.state = NEXT_STEP_REMOTE_FILE_LIST;
-        //NSLog(@"+++ Remote File List +++");
-        
-    } else if (self.state == NEXT_STEP_REMOTE_FILE_LIST) {
-        
-        //receiving list of available available files, store them as table data source
-        //NSLog(@"+++ File List +++");
-        if (!self.buffer) self.buffer = [[NSMutableArray alloc] init];
-        [self.buffer addObject:line];
-        
-        if ([line hasSuffix:@"tsunami> "]) {
-            
-            //we have received the complete file list - no more next step
-            //NSLog(@"+++ File list is complete");
-            [self performSelectorInBackground:@selector(parseFileList) withObject:self];
-        }
-        
-    }
-
-    NSLog(@"---%@---", line);
-
+    
 }
 
 #pragma mark Notifications
@@ -335,7 +345,7 @@
     if (self.task)
         [self.task terminate];
     self.task   = nil;
-    self.buffer = nil;
+    self.outputLinesBuffer = nil;
     [self addTextToOuput:@"\n+++ terminated +++\n"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -361,5 +371,31 @@
         [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
     });
 }
+
+#pragma mark Table Data Source
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
+    NSLog(@"numberOfRowsInTableView");
+    if (self.fileTable)
+        return self.fileList.count;
+    else
+        return 0;
+}
+
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)column row:(NSInteger)row {
+    
+    NSLog(@"objectValueForTableColumn : %@ - %ld", column, row);
+    
+    //retrive the value from the Array -> NSData -> Custom struct
+    NSData* data = [self.fileList objectAtIndex:row];
+    file_item item;
+    [data getBytes:&item length:sizeof(item)];
+    
+    if ([column.identifier isEqualToString:@"filename"])
+        return item.name;
+    else
+        return [NSString stringWithFormat:@"%ld", (unsigned long)item.size];
+}
+
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ClientViewController : NSViewController <NSTextFieldDelegate>
+@interface ClientViewController : NSViewController <NSTextFieldDelegate, NSTableViewDataSource>
 
 @property (weak) IBOutlet NSTextField *serverAddress;
 @property (weak) IBOutlet NSButton    *startStopButton;
@@ -32,8 +32,9 @@
 #define NOTIFICATION_CLIENT_READY   @"kNotificationTsunamiClientReady"
 
 @property NSInteger         state;
-@property NSMutableArray*   buffer;
+@property NSMutableArray*   outputLinesBuffer;
 @property NSMutableArray*   commandQueue;
+@property NSArray*          fileList;
 
 @end
 
