@@ -22,12 +22,16 @@
 @property NSFileHandle* input;
 
 //this class must implement kind of State Machine to keep track of outputs
-#define NEXT_STEP_NONE              0x00
+#define NEXT_STEP_UNKNOWN          -0x01
+#define NEXT_STEP_READY             0x00
 #define NEXT_STEP_DIR               0x02
 #define NEXT_STEP_REMOTE_FILE_LIST  0x04
 
-@property NSUInteger        state;
+#define NOTIFICATION_CLIENT_READY   @"kNotificationTsunamiClientReady"
+
+@property NSInteger         state;
 @property NSMutableArray*   buffer;
+@property NSMutableArray*   commandQueue;
 
 @end
 

@@ -18,29 +18,80 @@
 // free text for any command
 
 
+// TODO : crash when server is not available
+
+#pragma mark Initialization
+
 -(void)awakeFromNib {
     
     self.startStopButton.enabled = NO;
     self.outputText.editable     = NO;
+    
     self.serverAddress.delegate  = self;
     self.serverAddress.target    = self;
     self.serverAddress.action    = @selector(handleConnectButton:);
     
-    self.state  = NEXT_STEP_NONE;
+    self.state  = NEXT_STEP_UNKNOWN;
     self.buffer = nil;
+    
+    self.commandQueue = [[NSMutableArray alloc] init];
 }
+
+#pragma mark send command to client
+
+-(void)dequeueCommand:(NSNotification *)notification {
+
+    NSString* cmd = (NSString*)[self.commandQueue lastObject];
+    
+    if (self.state != NEXT_STEP_READY) {
+        NSLog(@"Client is not ready for sending command");
+        return;
+    }
+    if (!cmd) {
+        NSLog(@"no command available to dequeue");
+        return;
+    }
+    
+    [self.commandQueue removeLastObject];
+    
+    NSLog(@"Going to execute '%@' command", cmd);
+    NSString* command = [NSString stringWithFormat:@"%@\n",cmd ];
+    [self addTextToOuput:command];
+    [self.input writeData:[command dataUsingEncoding:NSUTF8StringEncoding]];
+
+    //warn other methods of this class that we are expecting a file list
+    if ([cmd isEqualToString:@"dir"]) self.state = NEXT_STEP_DIR;
+}
+
+-(void)sendCommand:(NSString*)cmd {
+    
+    //queue command for later execution
+    [self.commandQueue insertObject:cmd atIndex:0];
+    
+    //commands will be dequeued when the 'tsunami> ' prompt will appear
+    
+    //when client is in READY state - go ahead and dequeue command immediatley
+    if (self.state == NEXT_STEP_READY) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
+    }
+    
+    
+}
+
+#pragma mark Start / Stop Client
 
 - (IBAction)handleConnectButton:(id)sender {
     if (self.task && self.task.isRunning) {
         
         NSLog(@"Stop Client");
-        [self.task terminate];
+        //[self.task terminate];
+        [self sendCommand:@"close"];
         
     } else {
         NSLog(@"Start Client");
         
         self.outputText.string = @"";
-        [self addTextToOuput:@"+++ started +++"];
+        [self addTextToOuput:@"+++ started +++\n"];
         
         [self performSelectorInBackground:@selector(startTsunamiClient) withObject:self];
         self.startStopButton.title = @"Disconnect";
@@ -78,6 +129,7 @@
         self.task.standardInput = pin;
         self.input = pin.fileHandleForWriting;
         
+        //register for "output available" notification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(clientOutputNotification:)
                                                      name:NSFileHandleDataAvailableNotification
@@ -86,20 +138,21 @@
         //this requires to be called from a thread with an active event loop
         [pout.fileHandleForReading waitForDataInBackgroundAndNotify];
         
+        //register for "client terminated" notification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(clientDidTerminate:)
                                                      name:NSTaskDidTerminateNotification
                                                    object:nil];
+        //register for "client ready" notification
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(dequeueCommand:)
+                                                     name:NOTIFICATION_CLIENT_READY
+                                                   object:nil];
+
         [self.task launch];
-        
-        //Initial fetch list of available files (will be received in clientOutputNotification method)
-        //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-        dispatch_async(queue, ^{
-            NSLog(@"Going to execute DIR command");
-            self.state = NEXT_STEP_DIR;
-            [self.input writeData:[@"dir\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        });
+
+        //enqueue command
+        [self sendCommand:@"dir"];
         
         [self.task waitUntilExit];
     }
@@ -113,19 +166,9 @@
     
 }
 
-// notify the client terminated
-- (void) clientDidTerminate:(NSNotification *)notification {
-    NSLog(@"client ended");
-    
-    self.startStopButton.title = @"Connect";
-    self.task   = nil;
-    self.buffer = nil;
-    [self addTextToOuput:@"+++ terminated +++"];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+#pragma mark Output Parsing
 
-}
-
-//once every output line for the DIR command have been gathered, parse them
+//once each output line for the DIR command has been gathered, parse them
 //to create an array with (filename, size)
 - (NSArray*) parseFileList {
     
@@ -153,6 +196,8 @@
         
         NSError* error;
         NSString* string = [lines objectAtIndex:i];
+        
+        //skip empty lines
         if (string.length == 0) break;
         //NSLog(@"Handling line[%d] : %@", i, string);
         
@@ -161,7 +206,7 @@
         
         //first number - not used - use array index instead
         /*
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\ [0-9]+"
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^\\ [0-9]+"
                                                                                options:NSRegularExpressionCaseInsensitive
                                                                                  error:&error];
         NSRange rangeOfFirstMatch = [regex rangeOfFirstMatchInString:string options:0 range:NSMakeRange(0, [string length])];
@@ -203,34 +248,40 @@
 //statefull method to handle client's output
 -(void)handleOutputLine:(NSString*)line {
     
+    // TODO must parse error message when the client can not connect
+    
+    if ([line hasSuffix:@"tsunami> "]) {
+        self.state = NEXT_STEP_READY;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
+    }
+    
     if (self.state == NEXT_STEP_DIR && [line hasPrefix:@"Remote file list:"]) {
         
         //we are going to receive the list of file at next call
         self.state = NEXT_STEP_REMOTE_FILE_LIST;
-        NSLog(@"+++ Remote File List +++");
+        //NSLog(@"+++ Remote File List +++");
         
     } else if (self.state == NEXT_STEP_REMOTE_FILE_LIST) {
         
         //receiving list of available available files, store them as table data source
-        NSLog(@"+++ File List +++");
+        //NSLog(@"+++ File List +++");
         if (!self.buffer) self.buffer = [[NSMutableArray alloc] init];
         [self.buffer addObject:line];
         
-        if ([line rangeOfString:@"tsunami>"].location != NSNotFound) {
+        if ([line hasSuffix:@"tsunami> "]) {
             
             //we have received the complete file list - no more next step
-            self.state = NEXT_STEP_NONE;
-            NSLog(@"+++ File list is complete");
-            
-            [self parseFileList];
+            //NSLog(@"+++ File list is complete");
+            [self performSelectorInBackground:@selector(parseFileList) withObject:self];
         }
         
     }
 
-    //NSLog(@"%@", line);
+    //NSLog(@"---%@---", line);
 
 }
 
+#pragma mark Notifications
 
 // notify the client produced text output
 - (void)clientOutputNotification:(NSNotification *)notification
@@ -239,25 +290,34 @@
     NSData *data = nil;
     NSFileHandle* file = (NSFileHandle*)notification.object;
     
-    //NSMutableString* buffer = [[NSMutableString alloc] init];
-    
     while ((data = [file availableData]) && [data length]){
         
         NSString* line = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        //[buffer appendString:line];
+
         [self handleOutputLine:line];
         [self addTextToOuput:line];
         
-        //[file waitForDataInBackgroundAndNotify];
     }
     
-    //[self handleOutputLine:buffer];
-    //[self addTextToOuput:buffer];
-
 }
+
+// notify the client terminated
+- (void) clientDidTerminate:(NSNotification *)notification {
+    NSLog(@"client ended");
+    
+    self.startStopButton.title = @"Connect";
+    self.task   = nil;
+    self.buffer = nil;
+    [self addTextToOuput:@"\n+++ terminated +++\n"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+
+#pragma mark Misc
 
 - (IBAction)handleSettingsButton:(id)sender {
 }
+
 // enable / disable the start/stop button depending on content of "Server Address" text field
 - (void)controlTextDidChange:(NSNotification *)aNotification {
     [self.startStopButton setEnabled:(self.serverAddress.stringValue.length > 0)];
@@ -267,7 +327,7 @@
 - (void) addTextToOuput:(NSString*)text {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", text]];
+        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text]];
         
         [[self.outputText textStorage] appendAttributedString:attr];
         [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
