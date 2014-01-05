@@ -32,7 +32,7 @@
     NSLog(@"Server ended pid = %d", pid);
     self.task = nil;
     [self.startStopButton setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
-    [self addTextToOuput:@"+++ terminated +++"];
+    [self addTextToOuput:@"\n+++ terminated +++\n"];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -65,7 +65,7 @@
         NSLog(@"Start Server");
         
         self.outputText.string = @"";
-        [self addTextToOuput:@"+++ started +++"];
+        [self addTextToOuput:@"+++ started +++\n"];
         
         [self performSelectorInBackground:@selector(startDaemon) withObject:self];
         [self.startStopButton setImage:[NSImage imageNamed:@"NSStopProgressTemplate"]];
@@ -164,7 +164,7 @@
 - (void) addTextToOuput:(NSString*)text {
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", text]];
+        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text]];
         
         [[self.outputText textStorage] appendAttributedString:attr];
         [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
