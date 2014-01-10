@@ -374,6 +374,8 @@
     NSLog(@"settingsWindowWillClose for window %@", notification.object);
     if (self.settingsWindow && notification.object == self.settingsWindow.window) {
         self.settingsWindow = nil;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 
