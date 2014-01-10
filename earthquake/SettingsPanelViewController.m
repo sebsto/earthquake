@@ -13,9 +13,38 @@
 -(void)awakeFromNib {
     
     //set default values
-    self.downloadFolder.stringValue = [NSString stringWithFormat:@"%@/Downloads", NSHomeDirectory()];
-    self.serverPortNumber.stringValue = @"46224";
-    self.UDPBlockSize.stringValue     = @"8192";
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+    [prefs synchronize];
+
+    
+    NSString* client_dir = [prefs stringForKey:@"client_dir"];
+    if (!client_dir)
+        client_dir = [NSString stringWithFormat:@"%@/Downloads", NSHomeDirectory()];
+    
+    self.downloadFolder.stringValue = client_dir;
+    
+    NSString* server_port = [prefs stringForKey:@"server_port"];
+    if (!server_port)
+        server_port = @"46224";
+    self.serverPortNumber.stringValue = server_port;
+    
+    NSString* block_size = [prefs stringForKey:@"block_size"];
+    if (!block_size)
+        block_size = @"8192";
+    self.UDPBlockSize.stringValue     = block_size;
+    
+    self.view.window.delegate = self;
+}
+
+- (void)windowWillClose:(NSNotification *)notification {
+
+    NSLog(@"SeetingsWindow windowWillClose");
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:self.downloadFolder.stringValue forKey:@"client_dir"];
+    [prefs setObject:self.serverPortNumber.stringValue forKey:@"server_port"];
+    [prefs setObject:self.UDPBlockSize.stringValue forKey:@"block_size"];
+    [prefs synchronize];
+    
 }
 
 - (IBAction)changeFolderButton:(id)sender {
@@ -27,9 +56,7 @@
     [openDlg setCanChooseFiles:NO];
     [openDlg setAllowsMultipleSelection:NO];
     
-    // Display the dialog box.  If the OK pressed,
-    // process the files.
-    //[openDlg beginWithCompletionHandler:^(NSInteger result){
+    // Display the dialog box.  If the OK pressed, process the files.
     [openDlg beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
         if (NSFileHandlingPanelOKButton == result) {
         
