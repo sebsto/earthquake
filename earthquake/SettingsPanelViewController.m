@@ -33,7 +33,7 @@
         block_size = @"8192";
     self.UDPBlockSize.stringValue     = block_size;
     
-    self.view.window.delegate = self;
+    self.view.window.delegate = (id<NSWindowDelegate>)self;
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
