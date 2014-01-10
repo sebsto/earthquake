@@ -19,6 +19,7 @@
 }
 
 - (IBAction)changeFolderButton:(id)sender {
+    
     NSOpenPanel* openDlg = [NSOpenPanel openPanel];
     
     // Enable the selection of directories in the dialog.
@@ -28,18 +29,16 @@
     
     // Display the dialog box.  If the OK pressed,
     // process the files.
-    if ( [openDlg runModal] == NSOKButton ) {
+    //[openDlg beginWithCompletionHandler:^(NSInteger result){
+    [openDlg beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
+        if (NSFileHandlingPanelOKButton == result) {
         
-        // Gets list of all files selected
-        NSArray *files = [openDlg URLs];
-        
-        // Loop through the folder and process them (should be only one)
-        NSAssert([files count] == 1, @"More than one folder selected !");
-        for( int i = 0; i < [files count]; i++ ) {
-            // Do something with the folder name
-            self.downloadFolder.stringValue = [files objectAtIndex:0];
+            NSAssert([[openDlg URLs ]count] == 1, @"User can only select one file");
+            NSURL* file = [[openDlg URLs] objectAtIndex:0];
+            NSLog(@"Selected : %@", file);
+            self.downloadFolder.stringValue = [file path];
         }
-    }
+    }];
 }
 
 @end

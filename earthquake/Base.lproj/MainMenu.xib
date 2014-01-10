@@ -425,7 +425,7 @@
                                                 <constraint firstAttribute="width" constant="21" id="2ry-fE-eJu"/>
                                                 <constraint firstAttribute="height" constant="21" id="hh8-sa-Btp"/>
                                             </constraints>
-                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSFolder" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="apx-EW-wl4">
+                                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSFolder" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="apx-EW-wl4">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>

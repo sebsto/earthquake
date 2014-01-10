@@ -371,7 +371,8 @@
 // catch programmatic close or user clicking on close button
 -(void)settingsWindowWillClose:(NSNotification *)notification {
 
-    if (self.settingsWindow) {
+    NSLog(@"settingsWindowWillClose for window %@", notification.object);
+    if (self.settingsWindow && notification.object == self.settingsWindow.window) {
         self.settingsWindow = nil;
     }
 }
@@ -381,6 +382,7 @@
     
     //one time object creation
     if (!self.settingsWindow) {
+        
         self.settingsWindow = [[NSWindowController alloc] initWithWindowNibName:@"SettingsPanel"];
         [self.settingsWindow showWindow:self];
         
@@ -388,7 +390,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(settingsWindowWillClose:)
                                                      name:NSWindowWillCloseNotification
-                                                   object:nil];
+                                                   object:self.settingsWindow.window];
 
     } else {
         [self.settingsWindow.window performClose:self];
