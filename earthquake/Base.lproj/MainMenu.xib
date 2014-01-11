@@ -359,7 +359,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="696" height="490"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tabView translatesAutoresizingMaskIntoConstraints="NO" id="EER-0M-8SF">
                         <rect key="frame" x="13" y="10" width="670" height="474"/>

@@ -68,4 +68,7 @@
     }];
 }
 
+- (IBAction)closeButtonPressed:(id)sender {
+    [self.view.window close];
+}
 @end
