@@ -43,6 +43,13 @@
     self.settingsWindow     = nil;
     
     self.commandQueue = [[NSMutableArray alloc] init];
+    
+    NSString* server_address = [[NSUserDefaults standardUserDefaults] objectForKey:@"server_address"];
+    if (!server_address)
+        server_address = @"localhost";
+    
+    self.serverAddress.stringValue = server_address;
+    
 }
 
 #pragma mark send command to client
@@ -133,9 +140,7 @@
         self.task = [[NSTask alloc] init];
         self.task.launchPath = binaryPath;
         
-        // TODO pick up value from settings
-        self.task.currentDirectoryPath = [NSString stringWithFormat:@"%@/Downloads", NSHomeDirectory()];
-        
+        self.task.currentDirectoryPath = [[NSUserDefaults standardUserDefaults] objectForKey:@"client_dir"];        
         self.task.arguments = [NSArray arrayWithObjects:@"connect", self.serverAddress.stringValue, nil];
         
         // Set the pipe to the standard output and error to get the results of the command
@@ -405,13 +410,21 @@
     [self.startStopButton setEnabled:(self.serverAddress.stringValue.length > 0)];
 }
 
+//persist value to preferences
+- (void)controlTextDidEndEditing:(NSNotification *)aNotificationNotification {
+    NSLog(@"ClientViewController : controlTextDidEndEditing");
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:self.serverAddress.stringValue forKey:@"server_address"];
+    [prefs synchronize];
+}
+
 // add output to TextOutput & scroll to the last line
 - (void) addTextToOuput:(NSString*)text {
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text]];
         
-        [[self.outputText textStorage] appendAttributedString:attr];
+        [self.outputText.textStorage appendAttributedString:attr];
         [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
     });
 }
