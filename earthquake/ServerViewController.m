@@ -15,7 +15,6 @@
 // setup default value after loading
 - (void)awakeFromNib {
     
-    self.startStopButton.enabled = NO;
     self.outputText.editable     = NO;
     self.selectedDir.delegate    = self;
     
@@ -25,6 +24,12 @@
     
     self.selectedDir.stringValue = server_dir;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWillTerminate:)
+                                                 name:NSApplicationWillTerminateNotification
+                                               object:NSApp];
+    
+    
 }
 
 // notify the daemon terminated
@@ -32,6 +37,7 @@
     
     //this notification is also called when subprocessed are terminated
     //first, check that we are notified abou the main server process
+    NSLog(@"ServerViewController serverDidTerminate");
     int pid = ((NSTask*)notification.object).processIdentifier;
     if (self.task.processIdentifier != pid) return;
     
@@ -40,7 +46,14 @@
     [self.startStopButton setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
     [self addTextToOuput:@"\n+++ terminated +++\n"];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                          name:NSFileHandleDataAvailableNotification
+                                          object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSTaskDidTerminateNotification
+                                                  object:nil];
+    
     
 }
 
@@ -66,6 +79,8 @@
         
         NSLog(@"Stop Server");
         [self.task terminate];
+        
+        //task will be set to nil in serverDidterminate: notification
         
     } else {
         NSLog(@"Start Server");
@@ -182,6 +197,18 @@
         [[self.outputText textStorage] appendAttributedString:attr];
         [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
     });
+}
+
+//be sure we terminate the Daemon when quiting the application
+- (void)applicationWillTerminate:(NSNotification *)notification {
+    
+    NSLog(@"ServerViewController applicationWillTerminate");
+    if (self.task && self.task.isRunning) {
+        
+        NSLog(@"Stop Server");
+        [self.task terminate];
+    }
+    
 }
 
 @end
