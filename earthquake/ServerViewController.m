@@ -19,6 +19,12 @@
     self.outputText.editable     = NO;
     self.selectedDir.delegate    = self;
     
+    NSString* server_dir = [[NSUserDefaults standardUserDefaults] objectForKey:@"server_dir"];
+    if (!server_dir)
+        server_dir = [NSString stringWithFormat:@"%@/Downloads", NSHomeDirectory()];
+    
+    self.selectedDir.stringValue = server_dir;
+    
 }
 
 // notify the daemon terminated
@@ -157,6 +163,14 @@
 // enable / disable the start/stop button depending on content of "Selected Folder" text field
 - (void)controlTextDidChange:(NSNotification *)aNotification {
     [self.startStopButton setEnabled:(self.selectedDir.stringValue.length > 0)];
+}
+
+//persist value to preferences
+- (void)controlTextDidEndEditing:(NSNotification *)aNotificationNotification {
+    NSLog(@"ServerViewController : controlTextDidEndEditing");
+    NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:self.selectedDir.stringValue forKey:@"server_dir"];
+    [prefs synchronize];
 }
 
 // add output to TextOutput & scroll to the last line
