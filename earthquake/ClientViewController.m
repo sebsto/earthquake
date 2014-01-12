@@ -429,8 +429,15 @@
 #pragma mark Handle double click
 - (void)doubleClick:(id)object {
 
-    NSInteger rowNumber = [self.fileTable clickedRow];
-    NSLog(@"USer double clicked row %ld", rowNumber);
+    NSInteger row = [self.fileTable clickedRow];
+    NSLog(@"User double clicked row %ld", row);
+    
+    //retrive the value from the Array -> NSData -> Custom struct
+    NSData* data = [self.fileList objectAtIndex:row];
+    file_item item;
+    [data getBytes:&item length:sizeof(item)];
+    
+    [self sendCommand:[NSString stringWithFormat:@"get %@", item.name]];
 }
 
 #pragma mark Table Data Source
