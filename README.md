@@ -21,6 +21,10 @@ Binaries are downloaded and verified from https://github.com/sebsto/tsunami-udp/
 MD5 : ffb372832791c33a084a1de2f8a37776   
 SHA : 0cff1af5c3bcb7775e06f3ea4ff91e0dfc5f1e84
 
+## Usage
+
+Hopefully the UI is simpe enough to let you go through without the need of a "Usage" section :-)
+
 ## Build Requirements
 
 - Mac OS X [Mavericks](https://itunes.apple.com/en/app/os-x-mavericks/id675248567?mt=12)
