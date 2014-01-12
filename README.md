@@ -5,8 +5,18 @@ Cocoa front end for Tsunami UDP
 
 ## Limitations
 
-- Support only Tsunami Server (tsunamid), Client is work in progress.  
-- No binary distribution yet
+- probaly quite buggy - please [report feedback](https://github.com/sebsto/earthquake/issues)
+- any suggestions to improve User Interface is welcome !
+
+## Binary
+
+The ZIP file below contains an OSX 10.9 (Mavericks) app signed with a personal developer certificate.
+Be sure to authorise to run app downloaded from identified developers (System Preferences -> General -> "Allow Apps downloaded from")   
+
+### v0.1 (20140112-01)   
+[earthquake.zip](http://tsunami-udp.s3.amazonaws.com/eathquake/2014011201/earthquake.zip)   
+MD5 : ffb372832791c33a084a1de2f8a37776   
+SHA : 0cff1af5c3bcb7775e06f3ea4ff91e0dfc5f1e84
 
 ## Build Requirements
 
