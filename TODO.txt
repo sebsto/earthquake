@@ -1,0 +1,12 @@
+User Interface
+
+- Double click to start download
+- Allow to sort columns in CLient's view table
+
+
+Code Refactoring
+
+- ClientViewController.h : should use an enum with const values
+- ClientViewController.m : Better error handling
+- ClientViewController.m : Review regex used for parsing Client's ouput (file list)
+

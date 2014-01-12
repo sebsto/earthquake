@@ -15,6 +15,7 @@
 		0096DB5B1878C66F002D3C13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0096DB5A1878C66F002D3C13 /* Foundation.framework */; };
 		0096DB5E1878C670002D3C13 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0096DB5D1878C670002D3C13 /* main.m */; };
 		0096DB621878C670002D3C13 /* RegExpTest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0096DB611878C670002D3C13 /* RegExpTest.1 */; };
+		00ACEB5018829A1700B2A961 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = 00ACEB4F18829A1700B2A961 /* TODO.txt */; };
 		00D9D6BE1875F8F300A9EE0D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D9D6BD1875F8F300A9EE0D /* Cocoa.framework */; };
 		00D9D6C81875F8F300A9EE0D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 00D9D6C61875F8F300A9EE0D /* InfoPlist.strings */; };
 		00D9D6CA1875F8F300A9EE0D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D9D6C91875F8F300A9EE0D /* main.m */; };
@@ -67,6 +68,7 @@
 		0096DB5D1878C670002D3C13 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0096DB601878C670002D3C13 /* RegExpTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RegExpTest-Prefix.pch"; sourceTree = "<group>"; };
 		0096DB611878C670002D3C13 /* RegExpTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = RegExpTest.1; sourceTree = "<group>"; };
+		00ACEB4F18829A1700B2A961 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		00D9D6BA1875F8F300A9EE0D /* earthquake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = earthquake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D9D6BD1875F8F300A9EE0D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		00D9D6C01875F8F300A9EE0D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -140,6 +142,7 @@
 		00D9D6B11875F8F300A9EE0D = {
 			isa = PBXGroup;
 			children = (
+				00ACEB4F18829A1700B2A961 /* TODO.txt */,
 				00D9D6C31875F8F300A9EE0D /* earthquake */,
 				00D9D6E11875F8F300A9EE0D /* earthquakeTests */,
 				0096DB5C1878C66F002D3C13 /* RegExpTest */,
@@ -328,6 +331,7 @@
 			files = (
 				00D9D6C81875F8F300A9EE0D /* InfoPlist.strings in Resources */,
 				00D9D6D61875F8F300A9EE0D /* Images.xcassets in Resources */,
+				00ACEB5018829A1700B2A961 /* TODO.txt in Resources */,
 				00D9D6CE1875F8F300A9EE0D /* Credits.rtf in Resources */,
 				008AC45D1879FF2A006970AE /* SettingsPanel.xib in Resources */,
 				00D9D6D41875F8F300A9EE0D /* MainMenu.xib in Resources */,
