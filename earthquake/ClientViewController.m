@@ -12,8 +12,6 @@
 
 @implementation ClientViewController
 
-// TODO : double click to download file
-
 #pragma mark Initialization
 
 -(void)awakeFromNib {
@@ -25,7 +23,8 @@
     self.serverAddress.action    = @selector(handleConnectButton:);
     
     self.fileTable.dataSource    = self;
-    NSLog(@"file table : %@", self.fileTable);
+    self.fileTable.target        = self;
+    self.fileTable.doubleAction  = @selector(doubleClick:);
     
     self.connected          = NO;
     self.state              = NEXT_STEP_UNKNOWN;
@@ -425,6 +424,13 @@
     NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:self.serverAddress.stringValue forKey:@"server_address"];
     [prefs synchronize];
+}
+
+#pragma mark Handle double click
+- (void)doubleClick:(id)object {
+
+    NSInteger rowNumber = [self.fileTable clickedRow];
+    NSLog(@"USer double clicked row %ld", rowNumber);
 }
 
 #pragma mark Table Data Source
