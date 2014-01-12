@@ -399,10 +399,10 @@
                 NSLog(@"New Directory !");
                 [self sendCommand:@"quit"];
                 
-                //wait client to finish
-                [NSThread sleepForTimeInterval:0.5f];
-                
-                [self handleConnectButton:self];
+                //give the time the client to terminate, then restart
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                    [self handleConnectButton:self];
+                });
                 
             }
         }
