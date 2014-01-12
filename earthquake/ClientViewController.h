@@ -22,6 +22,7 @@
 @property NSFileHandle* input;
 
 //this class must implement kind of State Machine to keep track of outputs
+//TODO should use an enum with const values
 #define NEXT_STEP_UNKNOWN          -0x01
 #define NEXT_STEP_READY             0x00
 #define NEXT_STEP_DIR               0x02

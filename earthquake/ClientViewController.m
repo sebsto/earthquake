@@ -12,20 +12,12 @@
 
 @implementation ClientViewController
 
-// TODO : add a panel for extra settings
-// server port number
-// current (working) directory
-// UDP block size
-// free text for any command
-
-
 // TODO : double click to download file
 
 #pragma mark Initialization
 
 -(void)awakeFromNib {
     
-    self.startStopButton.enabled = NO;
     self.outputText.editable     = NO;
     
     self.serverAddress.delegate  = self;
@@ -141,7 +133,7 @@
         self.task.launchPath = binaryPath;
         
         self.task.currentDirectoryPath = [[NSUserDefaults standardUserDefaults] objectForKey:@"client_dir"];        
-        self.task.arguments = [NSArray arrayWithObjects:@"connect", self.serverAddress.stringValue, nil];
+        //self.task.arguments = [NSArray arrayWithObjects:@"connect", self.serverAddress.stringValue, nil];
         
         // Set the pipe to the standard output and error to get the results of the command
         NSPipe *pout = [[NSPipe alloc] init];
@@ -179,7 +171,12 @@
         [self addTextToOuput:@"+++ started +++\n"];
         self.statusButton.image = [NSImage imageNamed:@"NSStatusAvailable"];
         
+        NSString* serverPort = [[NSUserDefaults standardUserDefaults] objectForKey:@"server_port"];
+        if (!serverPort) serverPort = @"46224";
+        
         //enqueue command
+        [self sendCommand:[NSString stringWithFormat:@"set port %@", serverPort]];
+        [self sendCommand:[NSString stringWithFormat:@"connect %@", self.serverAddress.stringValue]];
         [self sendCommand:@"dir"];
         
         [self.task waitUntilExit];
@@ -330,6 +327,18 @@
     
 }
 
+// add output to TextOutput & scroll to the last line
+- (void) addTextToOuput:(NSString*)text {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text]];
+        
+        [self.outputText.textStorage appendAttributedString:attr];
+        [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
+    });
+}
+
+
 #pragma mark Notifications
 
 // notify the client produced text output
@@ -380,7 +389,7 @@
     if (self.settingsWindow && notification.object == self.settingsWindow.window) {
         self.settingsWindow = nil;
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:self.settingsWindow.window];
     }
 }
 
@@ -416,17 +425,6 @@
     NSUserDefaults* prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:self.serverAddress.stringValue forKey:@"server_address"];
     [prefs synchronize];
-}
-
-// add output to TextOutput & scroll to the last line
-- (void) addTextToOuput:(NSString*)text {
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSAttributedString* attr = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text]];
-        
-        [self.outputText.textStorage appendAttributedString:attr];
-        [self.outputText scrollRangeToVisible:NSMakeRange([[self.outputText string] length], 0)];
-    });
 }
 
 #pragma mark Table Data Source
