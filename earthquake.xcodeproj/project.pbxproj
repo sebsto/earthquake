@@ -299,6 +299,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Sebastien Stormacq";
 				TargetAttributes = {
+					00D9D6B91875F8F300A9EE0D = {
+						DevelopmentTeam = 56U756R2L2;
+					};
 					00D9D6DA1875F8F300A9EE0D = {
 						TestTargetID = 00D9D6B91875F8F300A9EE0D;
 					};
@@ -519,6 +522,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "earthquake/earthquake-Prefix.pch";
@@ -532,6 +536,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "earthquake/earthquake-Prefix.pch";
