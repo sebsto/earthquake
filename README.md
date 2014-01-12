@@ -11,7 +11,10 @@ Cocoa front end for Tsunami UDP
 ## Binary
 
 The ZIP file below contains an OSX 10.9 (Mavericks) app signed with a personal developer certificate.
-Be sure to authorise to run apps downloaded from identified developers (System Preferences -> General -> "Allow Apps downloaded from...")   
+Be sure to authorise to run apps downloaded from identified developers (System Preferences -> General -> "Allow Apps downloaded from...")  
+
+Tsunami Binaries are downloaded automatically at first run.  They are installed in ```~/Library/Application Support/com.stormacq.earthquake/```   
+Binaries are downloaded and verified from https://github.com/sebsto/tsunami-udp/wiki/Binaries 
 
 ### v0.1 (20140112-01)   
 [earthquake.zip](http://tsunami-udp.s3.amazonaws.com/eathquake/2014011201/earthquake.zip)   
@@ -29,8 +32,7 @@ SHA : 0cff1af5c3bcb7775e06f3ea4ff91e0dfc5f1e84
 - Open the project in XCode
 - Build & Run
 
-Tsunami Binaries are downloaded automatically at first run.  They are installed in ```~/Library/Application Support/com.stormacq.earthquake/```   
-Binaries are downloaded and verified from https://github.com/sebsto/tsunami-udp/wiki/Binaries 
+
 
 
 
