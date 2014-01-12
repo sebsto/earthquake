@@ -389,6 +389,23 @@
         self.settingsWindow = nil;
         
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:self.settingsWindow.window];
+        
+        //when download directory changes - we need to restart the client from the new directory
+        if (self.task && self.task.isRunning) {
+            
+            NSString* newDirectory = [[NSUserDefaults standardUserDefaults] objectForKey:@"client_dir"];
+            if ( ! [self.task.currentDirectoryPath isEqualToString:newDirectory]) {
+                
+                NSLog(@"New Directory !");
+                [self sendCommand:@"quit"];
+                
+                //wait client to finish
+                [NSThread sleepForTimeInterval:0.5f];
+                
+                [self handleConnectButton:self];
+                
+            }
+        }
     }
 }
 
