@@ -27,7 +27,7 @@
     self.fileTable.doubleAction  = @selector(doubleClick:);
     
     self.connected          = NO;
-    self.state              = NEXT_STEP_UNKNOWN;
+    self.state              = kNextStepUnknow;
     self.outputLinesBuffer  = nil;
     self.task               = nil;
     
@@ -49,7 +49,7 @@
 
     NSString* cmd = (NSString*)[self.commandQueue lastObject];
     
-    if (self.state != NEXT_STEP_READY) {
+    if (self.state != kNextStepReady) {
         NSLog(@"Client is not ready for sending command");
         return;
     }
@@ -66,7 +66,7 @@
     [self.input writeData:[command dataUsingEncoding:NSUTF8StringEncoding]];
 
     //warn other methods of this class that we are expecting a file list
-    if ([cmd isEqualToString:@"dir"]) self.state = NEXT_STEP_DIR;
+    if ([cmd isEqualToString:@"dir"]) self.state = kNextStepDir;
     
     
 }
@@ -79,11 +79,11 @@
     //commands will be dequeued when the 'tsunami> ' prompt will appear
     
     //when client is in READY state - go ahead and dequeue command immediatley
-    if (self.state == NEXT_STEP_READY) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
+    if (self.state == kNextStepReady) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationClientReady object:self];
         
         //do not accept other command while not back in READY state
-        self.state = NEXT_STEP_WAIT;
+        self.state = kNextStepWait;
     }
     
 }
@@ -161,7 +161,7 @@
         //register for "client ready" notification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(dequeueCommand:)
-                                                     name:NOTIFICATION_CLIENT_READY
+                                                     name:kNotificationClientReady
                                                    object:nil];
 
         [self.task launch];
@@ -292,13 +292,13 @@
         self.connected = YES;
     }
     
-    if (self.state == NEXT_STEP_DIR && [line hasPrefix:@"Remote file list:"]) {
+    if (self.state == kNextStepDir && [line hasPrefix:@"Remote file list:"]) {
         
         //we are going to receive the list of file at next call
-        self.state = NEXT_STEP_REMOTE_FILE_LIST;
+        self.state = kNextStepRemoteFileList;
         NSLog(@"+++ Remote File List +++");
         
-    } else if (self.state == NEXT_STEP_REMOTE_FILE_LIST) {
+    } else if (self.state == kNextStepRemoteFileList) {
         
         //receiving list of available available files, store them as table data source
         NSLog(@"+++ File List +++");
@@ -319,8 +319,8 @@
     
     if ([line hasSuffix:@"tsunami> "]) {
         NSLog(@"STATE is now ready to accept other commands");
-        self.state = NEXT_STEP_READY;
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_CLIENT_READY object:self];
+        self.state = kNextStepReady;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationClientReady object:self];
     }
     
     

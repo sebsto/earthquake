@@ -21,17 +21,7 @@
 @property NSTask *task;
 @property NSFileHandle* input;
 
-//this class must implement kind of State Machine to keep track of outputs
-//TODO should use an enum with const values
-#define NEXT_STEP_UNKNOWN          -0x01
-#define NEXT_STEP_READY             0x00
-#define NEXT_STEP_DIR               0x02
-#define NEXT_STEP_REMOTE_FILE_LIST  0x04
-#define NEXT_STEP_WAIT              0xFF
-
 @property BOOL connected;
-
-#define NOTIFICATION_CLIENT_READY   @"kNotificationTsunamiClientReady"
 
 @property NSInteger         state;
 @property NSMutableArray*   outputLinesBuffer;
@@ -43,6 +33,16 @@
 @end
 
 
+enum {
+    kNextStepUnknow,
+    kNextStepReady,
+    kNextStepDir,
+    kNextStepRemoteFileList,
+    kNextStepWait
+    
+};
+
+NSString * const kNotificationClientReady = @"kNotificationTsunamiClientReady";
 
 typedef struct file_item {
     __unsafe_unretained NSString   *name;
