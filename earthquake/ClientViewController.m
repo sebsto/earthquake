@@ -312,7 +312,10 @@
             //[self performSelectorInBackground:@selector(parseFileList) withObject:self];
             self.fileList = [self parseFileList];
             NSLog(@"fileTable : %@", self.fileTable);
-            [self.fileTable reloadData];
+            //reload table on main UI thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.fileTable reloadData];
+            });
         }
         
     }
